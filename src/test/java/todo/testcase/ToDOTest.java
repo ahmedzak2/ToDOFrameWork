@@ -1,6 +1,7 @@
 package todo.testcase;
 
 import io.restassured.http.ContentType;
+import models.ToDo;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -29,6 +30,40 @@ public class ToDOTest {
                 .assertThat().body("item",equalTo("Learn Appium"))
 
                 .assertThat().statusCode(201);
+
+    }
+
+    @Test
+    public void userShouldBeAbleToAddListByConstructor(){
+
+        ToDo list =new ToDo(false,"Learn Appium");
+        given().baseUri(baseUrl)
+                .log().all()
+                .auth().oauth2(token)
+                .body(list)
+                .contentType(ContentType.JSON)
+                .when().post("/api/v1/tasks")
+                .then().log().all()
+                .assertThat().body("isCompleted",equalTo(false))
+                .assertThat().body("item",equalTo("Learn Appium"))
+
+                .assertThat().statusCode(201);
+
+    }
+    @Test
+    public void userShouldBeNotAbleToAddListByConstructorIfIsCompletedIsMissing(){
+
+        ToDo list =new ToDo("Learn Appium");
+        given().baseUri(baseUrl)
+                .log().all()
+                .auth().oauth2(token)
+                .body(list)
+                .contentType(ContentType.JSON)
+                .when().post("/api/v1/tasks")
+                .then().log().all()
+                .assertThat().body("message",equalTo("\"isCompleted\" is required"))
+
+                .assertThat().statusCode(400);
 
     }
 @Test
