@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ToDo
 {
-    @JsonProperty("isCompleted")
 
     /*
     * Boolean is default value is null if I make it start with b small it will be with default is false
     * */
- private Boolean isCompleted ;
+    @JsonProperty("isCompleted")
+
+    private Boolean isCompleted ;
 
  private String item;
  /*
@@ -19,7 +20,9 @@ public class ToDo
  * */
  @JsonProperty("_id")
  private String id;
+ @JsonProperty("userID")
  private String userID;
+ @JsonProperty("createdAt")
  private String createdAt;
   @JsonProperty("__v")
     private String v;
@@ -86,5 +89,9 @@ public class ToDo
     public ToDo(Boolean isCompleted, String item) {
         this.isCompleted = isCompleted;
         this.item = item;
+    }
+
+    public ToDo() {
+
     }
 }
