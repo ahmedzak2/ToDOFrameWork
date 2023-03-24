@@ -5,6 +5,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.ToDo;
 import models.Users;
+import models.steps.TodoSteps;
+import models.steps.UserSteps;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -14,8 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class ToDOTest {
-    String token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MGY3ZjNkMmQ1YjEyMDAxNDY5ZDFjMCIsImZpcnN0TmFtZSI6ImFobWVkIiwibGFzdE5hbWUiOiJoYXplbSIsImlhdCI6MTY3ODczODM3MX0.xLw7qcgvf6hG39Flv4Cs4LkQ-63oZUjuF0SwIg7Ufro";
-
+    String token = UserSteps.getUserToken();
     String baseUrl= "https://qacart-todo.herokuapp.com/";
 
     @Test
@@ -26,14 +27,14 @@ public class ToDOTest {
         body.put("item","Learn Appium");
 */
 
-      ToDo body = new ToDo(false,"Learn Appium") ;
+      ToDo body = TodoSteps.generateTOdo();
        Response response= TodOApi.addTodO(body,token);
                 assertThat(response.path("isCompleted"),equalTo(false));
-                assertThat(response.path("item"),equalTo("Learn Appium"));
+                assertThat(response.path("item"),equalTo(body.getItem()));
                 assertThat(response.statusCode(),equalTo(201));
 ToDo reternToDo = response.body().as(ToDo.class);
         assertThat(reternToDo.getIsCompleted(),equalTo(false));
-        assertThat(reternToDo.getItem(),equalTo("Learn Appium"));
+        assertThat(reternToDo.getItem(),equalTo(body.getItem()));
 
     }
 

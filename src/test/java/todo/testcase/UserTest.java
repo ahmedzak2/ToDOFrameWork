@@ -4,6 +4,7 @@ import apis.UserApi;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.Users;
+import models.steps.UserSteps;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ body.put("lastName","hazem");
 body.put("email","ahmedziko5000@gmail.com");
 body.put("password","123456");
    */
-    Users users=new Users("ahmed","hazem","ahmedziko51000@gmail.com","123456");
+    Users users= UserSteps.generateUser();
     Response response= UserApi.register(users);
     /*
      * to make Rest assured to make dezrilation for response body then save
@@ -34,7 +35,7 @@ body.put("password","123456");
     assertThat(basicInformation.getFirstName(),equalTo(users.getFirstName()));
 
     assertThat( response.statusCode(),equalTo(201));
-    assertThat(response.path("firstName"),equalTo("ahmed"));
+    assertThat(response.path("firstName"),equalTo(users.getFirstName()));
 
 }
 @Test
@@ -45,12 +46,14 @@ body.put("password","123456");
    /* body.put("lastName","hazem");*/
    /* body.put("email","ahmedziko51000@gmail.com");*/
    /* body.put("password","123456");*/
-    Users users=new Users();
-    users.setFirstName("ahmed");
+   /* users.setFirstName("ahmed");
     users.setLastName("hazem");
     users.setEmail("Admin12313333@test.com");
     users.setPassword("123456");
- Response response=   UserApi.register(users);
+*/
+    Users users=UserSteps.getRegisterdUser();
+
+    Response response=   UserApi.register(users);
 
 
     Error error = response.body().as(Error.class);
@@ -93,12 +96,14 @@ assertThat(response.statusCode(),equalTo(400));
         body.put("email","ahmedziko5000@gmail.com");
         body.put("password","123456");
       */
-    Users users = new Users("zik303334444@gmail.com","12345");
-Response response=      UserApi.loginin(users);
+   // Users users = new Users("zik303334444@gmail.com","12345");
+    Users users=UserSteps.getRegisterdUser();
+Users loginData = new Users(users.getEmail(),users.getPassword());
+    Response response=      UserApi.loginin(loginData);
     Users basicInformation = response.body().as(Users.class);
 
 assertThat(response.statusCode(),equalTo(200));
-assertThat(response.path("firstName"),equalTo("ahmed"));
+assertThat(response.path("firstName"),equalTo(users.getFirstName()));
     assertThat (basicInformation.getAccessToken(),notNullValue());
 
 
@@ -127,8 +132,11 @@ assertThat(response.path("firstName"),equalTo("ahmed"));
                 .then().log().all()
                 .assertThat().statusCode(401)
                 .assertThat().body("message",equalTo("The email and password combination is not correct, please fill a correct email and password"));    */
-        Users users = new Users("zik303334444@gmail.com","1234567");
-        Response response=      UserApi.loginin(users);
+        Users users=UserSteps.getRegisterdUser();
+        Users loginData = new Users(users.getEmail(),"saad");
+
+     Response response=      UserApi.loginin(loginData);
+
         Error error = response.body().as(Error.class);
 
         assertThat(response.statusCode(),equalTo(401));
