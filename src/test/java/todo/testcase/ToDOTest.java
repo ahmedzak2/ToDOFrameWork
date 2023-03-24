@@ -69,32 +69,45 @@ ToDo reternToDo = response.body().as(ToDo.class);
 @Test
     public void userShouldBeGetAllAddList(){
         Response response=TodOApi.getAllTodoLIst(token);
-                assertThat(response.statusCode(),equalTo(200));
+
+    assertThat(response.statusCode(),equalTo(200));
 
     }
     @Test
+
+    /*
+    * Why there error in here  shown as
+    *
+    * java.lang.IllegalStateException: Cannot parse object because no supported Content-Type was specified in response. Content-Type was 'text/html; charset=UTF-8'.
+     * */
     public void userShouldBeGetOneAddList(){
-        String taskId ="64176c6044a62700145487bc";
+        ToDo toDo = TodoSteps.generateTOdo();
+
+        String taskId =TodoSteps.getTodoID(toDo,token);
         Response response = TodOApi.getTodoItem(taskId,token);
-       // ToDo reternToDo = response.body().as(ToDo.class);
+        ToDo reternToDo = response.body().as(ToDo.class);
         assertThat(response.statusCode(),equalTo(200));
-     //   assertThat(reternToDo.getItem(),equalTo("Learn Appium"));
+         assertThat(reternToDo.getItem(),equalTo(toDo.getItem()));
+
+        // assertThat(reternToDo.getItem(),equalTo("Learn Appium"));
        // assertThat(reternToDo.getIsCompleted(),equalTo(false));
 
 }
     @Test
     public void userShouldBeuPADTEOneAddList(){
-        String taskId ="64176c6044a62700145487bc";
+        ToDo toDo = TodoSteps.generateTOdo();
+
+        String taskId =TodoSteps.getTodoID(toDo,token);
       /*  HashMap<String,String> body = new HashMap<>();
         body.put("isCompleted","true");
         body.put("item","Learn Appium");*/
-ToDo body = new ToDo(true,"Learn Appium");
-        Response response = TodOApi.updateTodoList(body,taskId,token);
+      /*//ToDo body = new ToDo(true,"Learn Appium");*/
+        Response response = TodOApi.updateTodoList(toDo,taskId,token);
         ToDo reternToDo = response.body().as(ToDo.class);
 
         assertThat(response.statusCode(),equalTo(200));
-                assertThat(reternToDo.getItem(),equalTo("Learn Appium"));
-                assertThat(reternToDo.getIsCompleted(),equalTo(true));
+                assertThat(reternToDo.getItem(),equalTo(toDo.getItem()));
+                assertThat(reternToDo.getIsCompleted(),equalTo(false));
     }
     @Test
     public void userShouldBeDeleteneAddList(){
