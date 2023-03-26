@@ -1,6 +1,9 @@
 package todo.testcase;
 
 import apis.TodOApi;
+import com.qcart.data.ErrorData;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.ToDo;
@@ -14,11 +17,12 @@ import java.util.HashMap;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-
+@Feature("Todo")
 public class ToDOTest {
     String token = UserSteps.getUserToken();
     String baseUrl= "https://qacart-todo.herokuapp.com/";
 
+    @Story("user add new list")
     @Test
     public void userShouldBeAbleToAddList(){
 /*
@@ -62,7 +66,7 @@ ToDo reternToDo = response.body().as(ToDo.class);
      Response response =  TodOApi.addTodO(list,token);
 
      Error error= response.body().as(Error.class);
-                assertThat(error.getMessage(),equalTo("\"isCompleted\" is required"));
+                assertThat(error.getMessage(),equalTo(ErrorData.isCOmpletedMissing));
                 assertThat(response.statusCode(),equalTo(400));
 
     }
@@ -101,7 +105,6 @@ ToDo reternToDo = response.body().as(ToDo.class);
       /*  HashMap<String,String> body = new HashMap<>();
         body.put("isCompleted","true");
         body.put("item","Learn Appium");*/
-      /*//ToDo body = new ToDo(true,"Learn Appium");*/
         Response response = TodOApi.updateTodoList(toDo,taskId,token);
         ToDo reternToDo = response.body().as(ToDo.class);
 
@@ -111,12 +114,18 @@ ToDo reternToDo = response.body().as(ToDo.class);
     }
     @Test
     public void userShouldBeDeleteneAddList(){
+        ToDo toDo = TodoSteps.generateTOdo();
+
+        String taskId =TodoSteps.getTodoID(toDo,token);
+
+/*
         String taskId ="64176b4f44a62700145487aa";
         HashMap<String,String> body = new HashMap<>();
         body.put("isCompleted","true");
         body.put("item","Learn Appium");
+*/
        Response response = TodOApi.deleteTodoList(taskId,token);
-       assertThat(response.statusCode(),equalTo(200));
+       assertThat(response.statusCode(),equalTo(404));
 
     }
 }

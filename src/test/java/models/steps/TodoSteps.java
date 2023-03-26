@@ -10,7 +10,7 @@ public class TodoSteps {
         Faker faker =new Faker();
 
         String item = faker.book().title();
-        boolean isCompleted = false;
+        boolean isCompleted = true;
            return new ToDo(isCompleted,item);
 
     }

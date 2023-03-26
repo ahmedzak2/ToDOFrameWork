@@ -1,6 +1,9 @@
 package todo.testcase;
 
 import apis.UserApi;
+import com.qcart.data.ErrorData;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.Users;
@@ -13,8 +16,14 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+/*
+* As cuccmber  to make it features
+* */
+@Feature("user feature")
 public class UserTest {
-@Test
+
+    @Story("user register ")
+@Test(description = " ClientShouldBeAbleRegisterwith")
 public void  ClientShouldBeAbleRegisterwith(){
    /* HashMap <String,String>body = new HashMap<>();
 body.put("firstName","ahmed");
@@ -38,7 +47,12 @@ body.put("password","123456");
     assertThat(response.path("firstName"),equalTo(users.getFirstName()));
 
 }
-@Test
+
+/*
+* As scerniao  in cucumber
+* */
+@Story(" user register with fake data")
+@Test(description = "customerRegisterWithexistingAccount by using fake")
     public void customerRegisterWithexistingAccount(){
    /* HashMap <String,String>body = new HashMap<>();*/
 
@@ -61,7 +75,7 @@ body.put("password","123456");
     /*
     * To separate  the assert form the function by save the response to make it varibale
     * */
-assertThat(error.getMessage(),equalTo("Email is already exists in the Database"));
+assertThat(error.getMessage(),equalTo(ErrorData.userAlredyRegister));
 assertThat(response.statusCode(),equalTo(400));
 
 }
@@ -70,7 +84,7 @@ assertThat(response.statusCode(),equalTo(400));
       /*
       * To send all variable by use constrictor and make sure the arrangement is success
       * */
-        Users users=new Users("ahmed","hazem","zik303334444@gmail.com","12345");
+        Users users=new Users("ahmed","hazem","zik3033344222121323144@gmail.com","12345");
        Response response= UserApi.register(users);
 
         /*
@@ -90,6 +104,7 @@ assertThat(response.statusCode(),equalTo(400));
         assertThat(basicInformation.getFirstName(),equalTo(users.getFirstName()));
 
     }
+    @Story("user login successfully ")
 @Test
     public void  clientLoginWithExistingAccount(){
       /*  HashMap <String,String>body = new HashMap<>();
@@ -140,7 +155,7 @@ assertThat(response.path("firstName"),equalTo(users.getFirstName()));
         Error error = response.body().as(Error.class);
 
         assertThat(response.statusCode(),equalTo(401));
-        assertThat(error.getMessage(),equalTo("The email and password combination is not correct, please fill a correct email and password"));
+        assertThat(error.getMessage(),equalTo(ErrorData.wrongInupt));
 
 
     }

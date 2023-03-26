@@ -1,5 +1,7 @@
 package apis;
 
+import base.Base;
+import com.qcart.data.Route;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.Users;
@@ -11,11 +13,11 @@ public class UserApi {
     static String baseUrl= "https://qacart-todo.herokuapp.com/";
 
     public static Response   register(Users users){
-      Response response = given().baseUri(baseUrl)
-                .log().all()
-                .contentType(ContentType.JSON)
-                .body(users)
-                .when().post("/api/v1/users/register")
+
+        // to get all common requests  by use spec
+      Response response = given().spec(Base.getRequestspec())
+              .body(users)
+                .when().post(Route.registerPath)
               .then().log().all().extract().response();
 
         return response;
@@ -31,7 +33,7 @@ public static Response loginin(Users users){
             .log().all()
             .contentType(ContentType.JSON)
             .body(users)
-            .when().post("/api/v1/users/login")
+            .when().post(Route.loginPath)
             .then().log().all().extract().response();
 
 return  response;

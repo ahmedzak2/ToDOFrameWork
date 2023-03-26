@@ -1,5 +1,7 @@
 package apis;
 
+import base.Base;
+import com.qcart.data.Route;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.ToDo;
@@ -10,12 +12,10 @@ public class TodOApi {
    static String baseUrl= "https://qacart-todo.herokuapp.com/";
 
     public static Response addTodO( ToDo list,String token){
-        Response response= given().baseUri(baseUrl)
-                .log().all()
+        Response response= given().spec(Base.getRequestspec())
                 .auth().oauth2(token)
                 .body(list)
-                .contentType(ContentType.JSON)
-                .when().post("/api/v1/tasks")
+                .when().post(Route.TODOSRoute)
                 .then().log().all().extract().response();
 return  response;
     }
@@ -25,7 +25,7 @@ return  response;
                 .log().all()
                 .auth().oauth2(token)
                 .contentType(ContentType.JSON)
-                .when().get("/api/v1/tasks")
+                .when().get(Route.TODOSRoute)
                 .then().log().all().extract().response();
         return response;
     }
@@ -34,7 +34,7 @@ return  response;
                 .log().all()
                 .auth().oauth2(token)
                 .contentType(ContentType.JSON)
-                .when().get("/api/v1/tasks"+taskId)
+                .when().get(Route.TODOSRoute+taskId)
                 .then().log().all().extract().response();
         return response;
     }
@@ -43,7 +43,7 @@ return  response;
                 .log().all()
                 .auth().oauth2(token)
                 .contentType(ContentType.JSON)
-                .when().delete ("/api/v1/tasks/"+taskId)
+                .when().delete (Route.TODOSRoute+taskId)
                 .then().log().all().extract().response();
 return response;
     }
@@ -53,7 +53,7 @@ return response;
                 .auth().oauth2(token)
                 .contentType(ContentType.JSON)
                 .body(body)
-                .when().put ("/api/v1/tasks/"+taskId)
+                .when().put (Route.TODOSRoute+taskId)
                 .then().log().all().extract().response();
     return  response;
     }
