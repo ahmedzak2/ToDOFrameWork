@@ -1,0 +1,16 @@
+name: Run rest assured test cases by yml
+on:
+  push:
+   branches: ["main"]
+
+
+  jobs:
+    test:
+      runs-on: macos-latest
+      steps:
+       - users: actions/checkout@v3
+       - users: actions/setup-java@v3
+         with:
+           java-version: "11"
+           cache: maven
+       - run:  mvn clean test
