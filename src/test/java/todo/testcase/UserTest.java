@@ -39,8 +39,7 @@ body.put("password","123456");
      *
      * to save the needed output for response to save it in user class
      * */
-
-    Users basicInformation = response.body().as(Users.class);
+        Users basicInformation = response.body().as(Users.class);
     assertThat(basicInformation.getFirstName(),equalTo(users.getFirstName()));
 
     assertThat( response.statusCode(),equalTo(201));

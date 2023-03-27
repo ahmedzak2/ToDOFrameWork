@@ -19,6 +19,12 @@ public class Base {
                 .contentType(ContentType.JSON);
    return requestSpecification;
     }
+    public static RequestSpecification getRequestspecByuseRestAssuredclass(){
+        RequestSpecification requestSpecification =given()
+                .log().all()
+                .contentType(ContentType.JSON);
+        return requestSpecification;
+    }
 public static String getEnv(){
    String  env= System.getProperty("env","Production");
    String baseUrl;

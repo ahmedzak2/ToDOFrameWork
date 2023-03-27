@@ -2,17 +2,20 @@ package apis;
 
 import base.Base;
 import com.qcart.data.Route;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.ToDo;
 
+import static io.restassured.RestAssured.*;
 import static io.restassured.RestAssured.given;
 
 public class TodOApi {
    static String baseUrl= "https://qacart-todo.herokuapp.com/";
-
     public static Response addTodO( ToDo list,String token){
-        Response response= given().spec(Base.getRequestspec())
+        RestAssured.baseURI = Base.getEnv();
+
+        Response response= given().spec(Base.getRequestspecByuseRestAssuredclass())
                 .auth().oauth2(token)
                 .body(list)
                 .when().post(Route.TODOSRoute)
